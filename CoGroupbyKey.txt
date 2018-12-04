@@ -1,0 +1,20 @@
+MapElements<String, KV<String, String>> wordToKV =
+            MapElements.into(kvs(strings(), strings())).via(w -> KV.of(w.substring(0, 1), w));
+    PCollection<KV<String, String>> fruitsKV = fruits.apply("a", wordToKV);
+    PCollection<KV<String, String>> countriesKV = countries.apply("b", wordToKV);
+
+    final TupleTag<String> t1 = new TupleTag<>();
+    final TupleTag<String> t2 = new TupleTag<>();
+    PCollection<KV<String, CoGbkResult>> coGbkResultCollection =
+            KeyedPCollectionTuple.of(t1, fruitsKV)
+                    .and(t2, countriesKV)
+                    .apply(CoGroupByKey.create());
+
+    //PCollection<String> finalResultCollection =
+    return coGbkResultCollection.apply(ParDo.of(
+            new DoFn<KV<String, CoGbkResult>, String>() {
+              @ProcessElement
+              public void processElement(ProcessContext c) {
+                c.output((new WordsAlphabet(c.element().getKey(), c.element().getValue().getOnly(t1), c.element().getValue().getOnly(t2))).toString());
+              }
+            }));
