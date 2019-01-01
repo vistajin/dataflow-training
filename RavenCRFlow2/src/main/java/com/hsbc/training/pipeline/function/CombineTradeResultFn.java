@@ -9,8 +9,7 @@ import org.apache.beam.sdk.transforms.Combine.CombineFn;
 import java.io.Serializable;
 import java.util.*;
 
-public class CombineTradeResultFn
-        extends CombineFn<TradeResult, CombineTradeResultFn.Accum, CombinedTradeResult> {
+public class CombineTradeResultFn extends CombineFn<TradeResult, CombineTradeResultFn.Accum, CombinedTradeResult> {
     private static final long serialVersionUID = -6212468039609408782L;
 
     @Override
@@ -56,6 +55,31 @@ public class CombineTradeResultFn
 
         public void setTradeList(List<TradeResult> tradeList) {
             this.tradeList = tradeList;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + getOuterType().hashCode();
+            result = prime * result + ((tradeList == null) ? 0 : tradeList.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+            Accum other = (Accum) obj;
+            if (!getOuterType().equals(other.getOuterType())) return false;
+            if (tradeList == null) {
+                return other.tradeList == null;
+            } else return tradeList.equals(other.tradeList);
+        }
+
+        private CombineTradeResultFn getOuterType() {
+            return CombineTradeResultFn.this;
         }
 
     }

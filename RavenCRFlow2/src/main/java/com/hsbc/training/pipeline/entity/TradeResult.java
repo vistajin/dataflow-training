@@ -60,25 +60,20 @@ public class TradeResult implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         TradeResult other = (TradeResult) obj;
         if (result == null) {
-            if (other.result != null)
-                return false;
-        } else if (!result.equals(other.result))
-            return false;
+            if (other.result != null) return false;
+        } else if (!result.equals(other.result)) return false;
         if (timeStep == null) {
-            if (other.timeStep != null)
-                return false;
-        } else if (!timeStep.equals(other.timeStep))
-            return false;
+            if (other.timeStep != null) return false;
+        } else if (!timeStep.equals(other.timeStep)) return false;
         if (tradeId == null) {
             return other.tradeId == null;
-        } else return tradeId.equals(other.tradeId);
+        } else {
+            return tradeId.equals(other.tradeId);
+        }
     }
 }

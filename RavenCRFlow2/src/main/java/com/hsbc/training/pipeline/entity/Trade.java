@@ -32,21 +32,18 @@ public class Trade implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Trade other = (Trade) obj;
         if (legalDoc == null) {
-            if (other.legalDoc != null)
-                return false;
-        } else if (!legalDoc.equals(other.legalDoc))
-            return false;
+            if (other.legalDoc != null) return false;
+        } else if (!legalDoc.equals(other.legalDoc)) return false;
         if (tradeId == null) {
             return other.tradeId == null;
-        } else return tradeId.equals(other.tradeId);
+        } else {
+            return tradeId.equals(other.tradeId);
+        }
     }
 
     public String getTradeId() {

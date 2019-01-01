@@ -54,21 +54,18 @@ public class CombinedTradeResult implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         CombinedTradeResult other = (CombinedTradeResult) obj;
         if (results == null) {
-            if (other.results != null)
-                return false;
-        } else if (!results.equals(other.results))
-            return false;
+            if (other.results != null) return false;
+        } else if (!results.equals(other.results)) return false;
         if (tradeId == null) {
             return other.tradeId == null;
-        } else return tradeId.equals(other.tradeId);
+        } else {
+            return tradeId.equals(other.tradeId);
+        }
     }
 
     @Override

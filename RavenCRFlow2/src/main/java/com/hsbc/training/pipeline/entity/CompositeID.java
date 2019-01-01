@@ -63,26 +63,21 @@ public class CompositeID implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         CompositeID other = (CompositeID) obj;
         if (cptyId == null) {
-            if (other.cptyId != null)
-                return false;
-        } else if (!cptyId.equals(other.cptyId))
-            return false;
+            if (other.cptyId != null) return false;
+        } else if (!cptyId.equals(other.cptyId)) return false;
         if (legalDocId == null) {
-            if (other.legalDocId != null)
-                return false;
-        } else if (!legalDocId.equals(other.legalDocId))
-            return false;
+            if (other.legalDocId != null) return false;
+        } else if (!legalDocId.equals(other.legalDocId)) return false;
         if (tradeId == null) {
             return other.tradeId == null;
-        } else return tradeId.equals(other.tradeId);
+        } else {
+            return tradeId.equals(other.tradeId);
+        }
     }
 
     @Override

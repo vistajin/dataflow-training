@@ -80,42 +80,33 @@ public class LegalDoc implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         LegalDoc other = (LegalDoc) obj;
         if (collateralBalance == null) {
-            if (other.collateralBalance != null)
-                return false;
-        } else if (!collateralBalance.equals(other.collateralBalance))
-            return false;
+            if (other.collateralBalance != null) return false;
+        } else if (!collateralBalance.equals(other.collateralBalance)) return false;
         if (collateralizable == null) {
-            if (other.collateralizable != null)
-                return false;
-        } else if (!collateralizable.equals(other.collateralizable))
-            return false;
+            if (other.collateralizable != null) return false;
+        } else if (!collateralizable.equals(other.collateralizable)) return false;
         if (cptyId == null) {
-            if (other.cptyId != null)
-                return false;
-        } else if (!cptyId.equals(other.cptyId))
-            return false;
+            if (other.cptyId != null) return false;
+        } else if (!cptyId.equals(other.cptyId)) return false;
         if (legalDocId == null) {
-            if (other.legalDocId != null)
-                return false;
-        } else if (!legalDocId.equals(other.legalDocId))
-            return false;
+            if (other.legalDocId != null) return false;
+        } else if (!legalDocId.equals(other.legalDocId)) return false;
         if (nettable == null) {
             return other.nettable == null;
-        } else return nettable.equals(other.nettable);
+        } else {
+            return nettable.equals(other.nettable);
+        }
     }
 
     @Override
     public String toString() {
-        return "LegalDoc [legalDocId=" + legalDocId + ", cptyId=" + cptyId + ", nettable=" + nettable
-                + ", collateralizable=" + collateralizable + ", collateralBalance=" + collateralBalance + "]";
+        return "LegalDoc [legalDocId=" + legalDocId + ", cptyId=" + cptyId + ", nettable=" + nettable +
+            ", collateralizable=" + collateralizable + ", collateralBalance=" + collateralBalance + "]";
     }
 
 }
