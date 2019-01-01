@@ -16,22 +16,23 @@ import org.apache.beam.sdk.options.Description;
 import org.apache.beam.sdk.options.PipelineOptions;
 
 public interface CustomOptions extends PipelineOptions {
-	public final static String CSV_PATH = "/home/vistajin/IdeaProjects/dataflow-training/RavenCRFlow2/";
-	@Description("TradeResult File.")
-	@Default.String(CSV_PATH + "TradeResult.csv")
-	String getTradeResult();
+    String CSV_PATH = "/home/vistajin/IdeaProjects/dataflow-training/RavenCRFlow2/";
 
-	void setTradeResult(String input);
+    @Description("TradeResult File.")
+    @Default.String(CSV_PATH + "TradeResult.csv")
+    String getTradeResult();
 
-	@Description("Trade File.")
-	@Default.String(CSV_PATH + "TradeAttribute.csv")
-	String getTradeAttribute();
+    void setTradeResult(String input);
 
-	void setTradeAttribute(String input);
+    @Description("Trade File.")
+    @Default.String(CSV_PATH + "TradeAttribute.csv")
+    String getTradeAttribute();
 
-	@Description("LegalDoc File.")
-	@Default.String(CSV_PATH + "LegalDoc.csv")
-	String getLegalDoc();
+    void setTradeAttribute(String input);
 
-	void setLegalDoc(String input);
+    @Description("LegalDoc File.")
+    @Default.String(CSV_PATH + "LegalDoc.csv")
+    String getLegalDoc();
+
+    void setLegalDoc(String input);
 }

@@ -19,6 +19,7 @@ package com.hsbc.training.pipeline;
 import com.hsbc.training.pipeline.entity.LegalDoc;
 import com.hsbc.training.pipeline.entity.Trade;
 import com.hsbc.training.pipeline.entity.TradeResult;
+import com.hsbc.training.pipeline.function.CombineTradeResultFn;
 import com.hsbc.training.pipeline.function.ParseLegalDocFn;
 import com.hsbc.training.pipeline.function.ParseTradeAttrFn;
 import com.hsbc.training.pipeline.function.ParseTradeResultFn;
@@ -37,39 +38,42 @@ import java.util.Map;
 
 public class NormalFlowPipeline {
 
-  private static final Logger LOG = LoggerFactory.getLogger(NormalFlowPipeline.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NormalFlowPipeline.class);
 
-  public static void main(String[] args) {
-    // PipelineOptionsFactory.register(CustomOptions.class);
-    CustomOptions options = PipelineOptionsFactory.fromArgs(args)
-            .withValidation().as(CustomOptions.class);
+    public static void main(String[] args) {
+        // PipelineOptionsFactory.register(CustomOptions.class);
+        CustomOptions options = PipelineOptionsFactory.fromArgs(args)
+                .withValidation().as(CustomOptions.class);
 
-    Pipeline pipeline = Pipeline.create(options);
+        Pipeline pipeline = Pipeline.create(options);
 
-    PCollection<String> tradeResultPs = pipeline.apply(TextIO.read()
-            .from(options.getTradeResult()));
-    System.out.println(tradeResultPs);
-    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        //PCollection<String> tradeResultPs = pipeline.apply(TextIO.read()
+        //        .from(options.getTradeResult()));
+        //System.out.println(tradeResultPs);
+        //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-    PCollection<TradeResult> tradeResult = tradeResultPs.apply(ParDo.of(new ParseTradeResultFn()));
+        PCollection<TradeResult> tradeResult = pipeline.apply(TextIO.read()
+                .from(options.getTradeResult()))
+                .apply(ParDo.of(ParseTradeResultFn.getInstance()));
+        tradeResult.apply(ParDo.of(new CombineTradeResultFn()));
+
+        PCollection<String> legalDocPs = pipeline.apply(TextIO.read().
+                from(options.getLegalDoc()));
+        // System.out.println(legalDocPs);
+        PCollectionView<Map<String, LegalDoc>> legalDoc = legalDocPs
+                .apply(ParDo.of(ParseLegalDocFn.getInstance()))
+                .apply("Legal doc to map", View.asMap());
+        // System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        // System.out.println(legalDoc.getPCollection());
+        // System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        PCollection<String> tradeAttributePs = pipeline.apply(TextIO.read()
+                .from(options.getTradeAttribute()));
+        PCollectionView<Map<String, Trade>> tradeAttribute = tradeAttributePs
+                .apply(ParDo.of(ParseTradeAttrFn.getInstance()))
+                .apply("Trade attr to map", View.asMap());
 
 
-    PCollection<String> legalDocPs = pipeline.apply(TextIO.read().
-            from(options.getLegalDoc()));
-    // System.out.println(legalDocPs);
-    PCollectionView<Map<String, LegalDoc>> legalDoc = legalDocPs.apply(
-            ParDo.of(new ParseLegalDocFn())).apply("Legal doc to map", View.asMap());
-    System.out.println(legalDoc);
-
-
-    PCollection<String> tradeAttributePs = pipeline.apply(TextIO.read()
-            .from(options.getTradeAttribute()));
-    // System.out.println(tradeAttribute);
-    PCollectionView<Map<String, Trade>> tradeAttribute = tradeAttributePs.apply(
-            ParDo.of(new ParseTradeAttrFn())).apply("Trade attr to map", View.asMap());
-    System.out.println(tradeAttribute);
-
-
-    pipeline.run();
-  }
+        pipeline.run();
+    }
 }
